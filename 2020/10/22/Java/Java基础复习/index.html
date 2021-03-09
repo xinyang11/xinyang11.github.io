@@ -1,13 +1,13 @@
-<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Java基础 | xinyang11</title><meta name="keywords" content="Java,基础"><meta name="author" content="xinyang"><meta name="copyright" content="xinyang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="以下内容是我在复习Java后个人理解的内容，其中可能会有不少语言不够严谨的地方甚至错处，还请见谅。  JAVA运行机制  JAVA的三大基本特性 封装 将客观事物封装成一个类，也可以是将类中的成员变量或方法进行多种级别的保护，可实现信息的隐藏，防止在对象操作过程中的这些变量造成错误的修改。  继承 子类对父类的复写，子类可以使用父类的变量或方法而无需再次编码。  多态 需符合三个条件：1.类继承">
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Java基础 | xinyang11</title><meta name="keywords" content="Java,基础"><meta name="author" content="xinyang"><meta name="copyright" content="xinyang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="以下内容是我在复习Java后个人理解的内容，其中可能会有不少语言不够严谨的地方甚至错处，还请见谅。  Java基础理解一、JAVA运行机制   运行时类的加载逻辑：创建类的过程中自动加载类，加载类需要使用类加载器。jvm将要加载的类交给java.lang.classLoader; 装载过程如下：  loadClass 方法，实现判断当前类是否已加载，双亲委派 findClass 方法，class">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java基础">
 <meta property="og:url" content="http://xinyang11.github.io/2020/10/22/Java/Java%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/index.html">
 <meta property="og:site_name" content="xinyang11">
-<meta property="og:description" content="以下内容是我在复习Java后个人理解的内容，其中可能会有不少语言不够严谨的地方甚至错处，还请见谅。  JAVA运行机制  JAVA的三大基本特性 封装 将客观事物封装成一个类，也可以是将类中的成员变量或方法进行多种级别的保护，可实现信息的隐藏，防止在对象操作过程中的这些变量造成错误的修改。  继承 子类对父类的复写，子类可以使用父类的变量或方法而无需再次编码。  多态 需符合三个条件：1.类继承">
+<meta property="og:description" content="以下内容是我在复习Java后个人理解的内容，其中可能会有不少语言不够严谨的地方甚至错处，还请见谅。  Java基础理解一、JAVA运行机制   运行时类的加载逻辑：创建类的过程中自动加载类，加载类需要使用类加载器。jvm将要加载的类交给java.lang.classLoader; 装载过程如下：  loadClass 方法，实现判断当前类是否已加载，双亲委派 findClass 方法，class">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://xinyang11.github.io/img/cover/028.jpg">
 <meta property="article:published_time" content="2020-10-22T05:47:05.856Z">
-<meta property="article:modified_time" content="2020-12-06T04:23:07.514Z">
+<meta property="article:modified_time" content="2021-03-09T05:58:12.328Z">
 <meta property="article:author" content="xinyang">
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="基础">
@@ -81,7 +81,7 @@ var saveToLocal = {
   isHome: false,
   isHighlightShrink: false,
   isSidebar: true,
-  postUpdate: '2020-12-06 12:23:07'
+  postUpdate: '2021-03-09 13:58:12'
 }</script><noscript><style type="text/css">
   #nav {
     opacity: 1
@@ -143,12 +143,24 @@ var saveToLocal = {
     if (t === 'dark') activateDarkMode()
     else if (t === 'light') activateLightMode()
   }
-})()</script><style type="text/css">#toggle-sidebar {bottom: 80px}</style><meta name="generator" content="Hexo 5.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">Articles</div><div class="length_num">43</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">Tags</div><div class="length_num">57</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">Categories</div><div class="length_num">17</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand hide"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><div id="web_bg"></div><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#JAVA%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6"><span class="toc-number">1.</span> <span class="toc-text">JAVA运行机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JAVA%E7%9A%84%E4%B8%89%E5%A4%A7%E5%9F%BA%E6%9C%AC%E7%89%B9%E6%80%A7"><span class="toc-number">2.</span> <span class="toc-text">JAVA的三大基本特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java%E7%9A%84%E6%97%A0%E5%B9%B3%E5%8F%B0%E6%80%A7"><span class="toc-number">3.</span> <span class="toc-text">Java的无平台性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%AE%E7%82%B9%E5%9E%8B"><span class="toc-number">4.</span> <span class="toc-text">浮点型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-number">5.</span> <span class="toc-text">字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">6.</span> <span class="toc-text">基本数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%85%E8%A3%85%E7%B1%BB%E5%9E%8B"><span class="toc-number">7.</span> <span class="toc-text">包装类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%86%9F%E6%82%89Java%E4%B8%AD%E5%90%84%E7%A7%8D%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">8.</span> <span class="toc-text">熟悉Java中各种关键字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E5%90%88%E7%B1%BB"><span class="toc-number">9.</span> <span class="toc-text">集合类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java-%E7%9A%84%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6"><span class="toc-number">10.</span> <span class="toc-text">Java 的反射机制</span></a></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(/img/cover/028.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">xinyang11</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand hide"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">Java基础</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-10-22T05:47:05.856Z" title="Created 2020-10-22 13:47:05">2020-10-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2020-12-06T04:23:07.514Z" title="Updated 2020-12-06 12:23:07">2020-12-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Java/">Java</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><blockquote>
+})()</script><style type="text/css">#toggle-sidebar {bottom: 80px}</style><meta name="generator" content="Hexo 5.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">Articles</div><div class="length_num">48</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">Tags</div><div class="length_num">63</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">Categories</div><div class="length_num">18</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand hide"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><div id="web_bg"></div><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Java%E5%9F%BA%E7%A1%80%E7%90%86%E8%A7%A3"><span class="toc-number">1.</span> <span class="toc-text">Java基础理解</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81JAVA%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6"><span class="toc-number">1.1.</span> <span class="toc-text">一、JAVA运行机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81JAVA%E7%9A%84%E4%B8%89%E5%A4%A7%E5%9F%BA%E6%9C%AC%E7%89%B9%E6%80%A7"><span class="toc-number">1.2.</span> <span class="toc-text">二、JAVA的三大基本特性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Java%E7%9A%84%E5%B9%B3%E5%8F%B0%E6%97%A0%E5%85%B3%E6%80%A7"><span class="toc-number">1.2.1.</span> <span class="toc-text">Java的平台无关性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%AE%E7%82%B9%E5%9E%8B"><span class="toc-number">1.2.2.</span> <span class="toc-text">浮点型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-number">1.2.3.</span> <span class="toc-text">字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.2.4.</span> <span class="toc-text">基本数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%85%E8%A3%85%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.2.5.</span> <span class="toc-text">包装类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%86%9F%E6%82%89Java%E4%B8%AD%E5%90%84%E7%A7%8D%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">1.2.6.</span> <span class="toc-text">熟悉Java中各种关键字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E5%90%88%E7%B1%BB"><span class="toc-number">1.2.7.</span> <span class="toc-text">集合类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java-%E7%9A%84%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6"><span class="toc-number">1.2.8.</span> <span class="toc-text">Java 的反射机制</span></a></li></ol></li></ol></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(/img/cover/028.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">xinyang11</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand hide"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">Java基础</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2020-10-22T05:47:05.856Z" title="Created 2020-10-22 13:47:05">2020-10-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-03-09T05:58:12.328Z" title="Updated 2021-03-09 13:58:12">2021-03-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Java/">Java</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><blockquote>
 <p>以下内容是我在复习Java后个人理解的内容，其中可能会有不少语言不够严谨的地方甚至错处，还请见谅。</p>
 </blockquote>
-<h3 id="JAVA运行机制"><a href="#JAVA运行机制" class="headerlink" title="JAVA运行机制"></a>JAVA运行机制</h3><p><img src="https://gitee.com/xinyang2233/blog-images/raw/master/image-20201031103810073.png" alt="image-20201031103810073"></p>
+<h1 id="Java基础理解"><a href="#Java基础理解" class="headerlink" title="Java基础理解"></a>Java基础理解</h1><h2 id="一、JAVA运行机制"><a href="#一、JAVA运行机制" class="headerlink" title="一、JAVA运行机制"></a>一、JAVA运行机制</h2><p><img src="https://gitee.com/xinyang2233/blog-images/raw/master/image-20201031103810073.png" alt="image-20201031103810073"></p>
 <p><img src="https://gitee.com/xinyang2233/blog-images/raw/master/image-20201119213732966.png" alt="image-20201119213732966"></p>
-<h3 id="JAVA的三大基本特性"><a href="#JAVA的三大基本特性" class="headerlink" title="JAVA的三大基本特性"></a>JAVA的三大基本特性</h3><ul>
+<p><img src="https://gitee.com/xinyang2233/blog-images/raw/master/20140101125755203" alt="img"></p>
+<p>运行时类的加载逻辑：创建类的过程中自动加载类，加载类需要使用类加载器。jvm将要加载的类交给java.lang.classLoader;</p>
+<p>装载过程如下：</p>
+<ol>
+<li>loadClass 方法，实现判断当前类是否已加载，双亲委派</li>
+<li>findClass 方法，classLoader 下无具体实现，分情况考虑：自定义类加载器需配置自己的findClass ，系统默认的findClass 方法交由URLClassLoader 实现</li>
+<li>defineClass 方法，类加载过程的目的是将已编译的字节码文件转化为java Class 类实例，由于java 中没有为 Class 类提供构造方法，所以我们需要将获取到的 Class 文件以二进制字节码形式交给 defineClass 处理实现 Class 类的实例化。</li>
+</ol>
+<p>在Java的历史中，双亲委派模型主要出现过3次被破坏的情况。(重写 loadClass 方法)</p>
+<p>第一次被破坏就是我上面说的，是在JDK1.2之前，那时候还没有出现双亲委派的概念，破坏必然到处存在；</p>
+<p>第二次被破坏是由于模型自身缺陷而导致一些实际问题无法解决，只有打破双亲委派才能很好地解决这些问题，比如在使用JDBC是用到的的 java.sql.Driver 接口（在《JVM类加载机制详解——类加载器》中有详细说明）；</p>
+<p>第三次被破坏是对于程序热部署的需求，比较知名的实现方案如OSGi。</p>
+<h2 id="二、JAVA的三大基本特性"><a href="#二、JAVA的三大基本特性" class="headerlink" title="二、JAVA的三大基本特性"></a>二、JAVA的三大基本特性</h2><ul>
 <li><p>封装</p>
 <p>将客观事物封装成一个类，也可以是将类中的成员变量或方法进行多种级别的保护，可实现信息的隐藏，防止在对象操作过程中的这些变量造成错误的修改。</p>
 </li>
@@ -160,12 +172,12 @@ var saveToLocal = {
 <p>同一种方法对不同的对象有不同的解释，会产生不同的执行结果。</p>
 </li>
 </ul>
-<h3 id="Java的无平台性"><a href="#Java的无平台性" class="headerlink" title="Java的无平台性"></a>Java的无平台性</h3><ul>
+<h3 id="Java的平台无关性"><a href="#Java的平台无关性" class="headerlink" title="Java的平台无关性"></a>Java的平台无关性</h3><ul>
 <li><p>Class文件</p>
 <p>Class文件在每个平台都可以使用，且它使用的是字节码编码，与JVM一致，可以统一被JVM处理转化为二进制文件。</p>
 </li>
 <li><p>Java的语言规范</p>
-<p>Java数据类型的值域和方法都是固定的，不会应为平台的变化而变化。对应的C++，它的数据类型与占位宽度有关，同样的int类型数据在32位中为2个字节，在64位中可能就变成了4个字节。</p>
+<p>Java数据类型的值域和方法都是固定的，不会因为平台的变化而变化。对应的C++，它的数据类型与占位宽度有关，同样的int类型数据在32位中为2个字节，在64位中可能就变成了4个字节。</p>
 </li>
 <li><p>Java虚拟机（JVM）</p>
 <p>Java的无平台性很大一部分依靠的是JVM，JVM本身是跟平台相关的。因为各个平台的机器指令可能不同，对应的JVM也就不同。所以针对不同的平台会有对应的JVM，它能将与自己存储单元一致，即都为字节码的文件转化为在当前平台可直接使用的二进制文件。它其实就是起到了平台与class文件间的桥梁的作用。</p>
@@ -181,13 +193,13 @@ var saveToLocal = {
 </ul>
 <h3 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h3><ul>
 <li><p>String</p>
-<p>一旦一个String对象在内存堆中被创建，他就无法被修改。String类的所有方法都无法改变它本身的值，而是会创建一个新的内存空间，并返回一个新的对象。</p>
+<p>一旦一个String对象在内存堆中被创建，他就无法被修改（final关键字修饰）。String类的所有方法都无法改变它本身的值，而是会创建一个新的内存空间，并返回一个新的对象。</p>
 </li>
 <li><p>StringBuffer/StringBuilder</p>
-<p>因为Java特有的垃圾回收机制导致每次都需要清理修改String对象后的原对象。这样会对时间造成极大地浪费。StringBuffer/StringBuider是为了解决String本身无法被修改的情况而产生的。</p>
+<p>因为Java特有的垃圾回收机制导致每次都需要清理修改String对象后的原对象。这样会对时间造成极大地浪费。StringBuffer/StringBuilder是为了解决String本身无法被修改的情况而产生的。</p>
 <ul>
 <li><p>StringBuffer和StringBuilder的区别</p>
-<p>StringBuffer的所有属性、方法都用synchronized修饰，因此它是线程安全的，所以他比较适合用在多线程中，同时它的toString方法会通过使用缓存区的值来构造字符串。相反StringBuilder并不是线程安全的，他适合在单线程中使用，且它的toString方法是通过直接复制成员属性的value值来构造字符串。</p>
+<p>StringBuffer的属性、方法用到了synchronized修饰，因此它是线程安全的，所以他比较适合用在多线程中，同时它的toString方法会通过使用缓存区的值来构造字符串。相反StringBuilder并不是线程安全的，他适合在单线程中使用，且它的toString方法是通过直接复制成员属性的value值来构造字符串。</p>
 <p>当然StringBuilder的性能肯定是优于StringBuffer的。</p>
 </li>
 </ul>
@@ -197,10 +209,11 @@ var saveToLocal = {
 <li><p>substring</p>
 <ul>
 <li><p>JDK 6</p>
-<p>substring方法在JDK6中存在内存泄露问题，原因是该方法并没有对字符串进行修改，仅是对string对象内的offset和count属性做了修改，这样做会导致我们的string在使用过程中一直引用的并不是我们实际想要截取的字符串，且由于一直被引用导致无法被回收，这就很有可能造成内存泄漏。</p>
+<p>substring方法在JDK 6中存在内存泄露问题，原因是该方法并没有对字符串进行修改，仅是对string对象内的offset和count属性做了修改，这样做会导致我们的string在使用过程中一直引用的并不是我们实际想要截取的字符串，且由于一直被引用导致无法被回收，这就很有可能造成内存泄漏。</p>
 </li>
 <li><p>JDK 7</p>
 <p>在原来基础上更改了内置属性value[]的值，引用的将是我们实际所截取到字符串，避免了内存泄露。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.value = Arrays.copyOfRange(value, offset, offset+count);</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 </li>
@@ -212,9 +225,12 @@ var saveToLocal = {
 <p>编译期常量之间的运算会进行常量叠加</p>
 <p>编译期常量：</p>
 <pre><code>- 数字或者字符串字面量。
-</code></pre><ul>
+</code></pre><p>  声明为final类型的基本类型或String类型并直接赋值（非运算）的变量就是编译期常量</p>
+<ul>
 <li>编译期常量赋值的Final修饰的常量<ul>
 <li>编译期常量简单运算的结果的字面量。</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -231,7 +247,7 @@ var saveToLocal = {
 </li>
 <li><p>StringBuffer/StringBuilder 的append()方法</p>
 <p>StringBuffer.append(str);</p>
-</li>
+<ul>
 <li><p>开源类库中的拼接方法</p>
 <p>StringUtils.join</p>
 </li>
@@ -245,11 +261,11 @@ var saveToLocal = {
 <p>  ​        耗时排名：StringBuilder&lt;StringBuffer&lt;concat&lt;+&lt;StringUtils.join</p>
 <ul>
 <li><p>String.valueOf和Integer.toString的区别</p>
-<p>无任何区别，实际上String.valueO就是调用的Integer.toString方法</p>
+<p>无任何区别，实际上String.valueOf就是调用的Integer.toString方法</p>
 </li>
 <li><p>switch对String的支持</p>
-<p>Java中swith支持byte、short、int、char、String</p>
-<p>但实际上swith是只支持int类型的，之所以可以使用char、String是因为它把它们都作为int处理。</p>
+<p>Java中switch支持byte、short、int、char、String</p>
+<p>但实际上switch是只支持int类型的，之所以可以使用char、String是因为它把它们都作为int处理。</p>
 <p>char可以转化为ASCII码。</p>
 <p>String可以转化为hashCode哈希值，然后在通过equals方法进行安全检查。</p>
 </li>
@@ -310,7 +326,7 @@ var saveToLocal = {
 </li>
 <li><p>SynchronizedList和Vector的区别</p>
 <ol>
-<li><p>SynchronizeList主要使用的是同步代码块包上的list方法，Vector主要使用同步方法。</p>
+<li><p>SynchronizedList主要使用的是同步代码块包上的list方法，Vector主要使用同步方法。</p>
 </li>
 <li><p>SynchronizedList有很好的扩展和兼容功能。他可以将所有的List的子类转成线程安全的类。</p>
 </li>
@@ -362,7 +378,7 @@ var saveToLocal = {
 <p>它具有如下特性：</p>
 <pre><code>- 无存储：他不是一种数据结构，仅是一个视图。
 - 函数式编程：对数据源的Stream操作并不会更改数据源的值。
-- 惰式编程：只有到用户需要最终结果时，流上的操作才会被执行。
+- 惰式编程：只有当用户需要最终结果时，流上的操作才会被执行。
 - 可消费性：最终操作完后便不可再用，需要再次生成。
 </code></pre><p>stream分三个阶段：</p>
 <ul>

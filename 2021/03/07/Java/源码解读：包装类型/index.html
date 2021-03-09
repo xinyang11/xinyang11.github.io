@@ -1,0 +1,375 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>源码解读：包装类型 | xinyang11</title><meta name="keywords" content="源码,包装类"><meta name="author" content="xinyang"><meta name="copyright" content="xinyang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="源码解读：包装类型 因为java是面向对象的，很多时候我们需要用到的是对象而非基本数据类型。因此我们就在每个基本数据类型上都建了一个包装类型，他们具有对象的性质，并添加有属性和方法。这里我们直接开始对包装类源码中的一些独特之处做出解析。  在解读包装类的源码之前我们不妨先谈一谈java中与包装类型相关的语法糖[语法糖就是对现有语法的一个封装,通过编译器实现，可通过javap&#x2F;jad 等反编译工具观">
+<meta property="og:type" content="article">
+<meta property="og:title" content="源码解读：包装类型">
+<meta property="og:url" content="http://xinyang11.github.io/2021/03/07/Java/%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB%EF%BC%9A%E5%8C%85%E8%A3%85%E7%B1%BB%E5%9E%8B/index.html">
+<meta property="og:site_name" content="xinyang11">
+<meta property="og:description" content="源码解读：包装类型 因为java是面向对象的，很多时候我们需要用到的是对象而非基本数据类型。因此我们就在每个基本数据类型上都建了一个包装类型，他们具有对象的性质，并添加有属性和方法。这里我们直接开始对包装类源码中的一些独特之处做出解析。  在解读包装类的源码之前我们不妨先谈一谈java中与包装类型相关的语法糖[语法糖就是对现有语法的一个封装,通过编译器实现，可通过javap&#x2F;jad 等反编译工具观">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://xinyang11.github.io/img/cover/028.jpg">
+<meta property="article:published_time" content="2021-03-07T03:23:46.148Z">
+<meta property="article:modified_time" content="2021-03-07T06:52:18.028Z">
+<meta property="article:author" content="xinyang">
+<meta property="article:tag" content="源码">
+<meta property="article:tag" content="包装类">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://xinyang11.github.io/img/cover/028.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://xinyang11.github.io/2021/03/07/Java/%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB%EF%BC%9A%E5%8C%85%E8%A3%85%E7%B1%BB%E5%9E%8B/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.2.0',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  translate: {"defaultEncoding":1,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"Author: xinyang","link":"Link: ","source":"Source: xinyang11","info":"Copyright is owned by the author. For commercial reprints, please contact the author for authorization. For non-commercial reprints, please indicate the source."}},
+  ClickShowText: {"text":"I,LOVE,YOU","fontSize":"15px"},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: true
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2021-03-07 14:52:18'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {
+  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }
+})()</script><style type="text/css">#toggle-sidebar {bottom: 80px}</style><meta name="generator" content="Hexo 5.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">Articles</div><div class="length_num">48</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">Tags</div><div class="length_num">63</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">Categories</div><div class="length_num">18</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand hide"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><div id="web_bg"></div><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB%EF%BC%9A%E5%8C%85%E8%A3%85%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">源码解读：包装类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%86%E8%A3%85%E7%AE%B1"><span class="toc-number">1.1.</span> <span class="toc-text">拆装箱</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E6%AE%B5%E5%88%86%E6%9E%90"><span class="toc-number">1.2.</span> <span class="toc-text">字段分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8C%85%E8%A3%85%E7%B1%BB%E7%9A%84%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6"><span class="toc-number">1.3.</span> <span class="toc-text">包装类的缓存机制</span></a></li></ol></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(/img/cover/028.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">xinyang11</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand hide"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">源码解读：包装类型</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-03-07T03:23:46.148Z" title="Created 2021-03-07 11:23:46">2021-03-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-03-07T06:52:18.028Z" title="Updated 2021-03-07 14:52:18">2021-03-07</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/java/">java</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="源码解读：包装类型"><a href="#源码解读：包装类型" class="headerlink" title="源码解读：包装类型"></a>源码解读：包装类型</h1><blockquote>
+<p>因为java是面向对象的，很多时候我们需要用到的是对象而非基本数据类型。因此我们就在每个基本数据类型上都建了一个包装类型，他们具有对象的性质，并添加有属性和方法。这里我们直接开始对包装类源码中的一些独特之处做出解析。</p>
+</blockquote>
+<p>在解读包装类的源码之前我们不妨先谈一谈java中与包装类型相关的语法糖[语法糖就是对现有语法的一个封装,通过编译器实现，可通过javap/jad 等反编译工具观察到]</p>
+<blockquote>
+<p>反编译：执行java之前，我们首先需要将java文件编译为class字节码文件(javac xx.java)，此时编译生成的字节码文件其实就是一个二进制文件，我们用文本编辑器将它打开可以观察到，里面存放了许多重要数据信息，具体可以参考相关文档了解这些二进制信息代表的含义。但问题是我们要想阅读这些二进制信息无疑是困难且繁琐的，这时候就可以<strong>通过反编译工具将字节码文件转为我们可以理解的信息</strong>。其中JDK有给我们自带的反编译工具<code>javap</code>，但它生成的信息更接近字节码，可以让我们更专业的了解到class文件内部的具体细节，jad则是直接生成我们熟知的java高级语法，在后文可以看到。</p>
+</blockquote>
+<h2 id="拆装箱"><a href="#拆装箱" class="headerlink" title="拆装箱"></a>拆装箱</h2><p>拆装箱就是一个简单常见的语法糖。我们在程序中直接对包装类以及基础数据类型操作时，在程序编译过程中编译器就会自动进行拆装箱操作。我们这里可以先通过jad工具进行反编译以更加简单直观的方式观察的拆装箱结果。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* valueOf():装箱</span></span><br><span class="line"><span class="comment">* intValue:拆箱</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">Integer x1 = <span class="keyword">new</span> Integer(<span class="number">101</span>);</span><br><span class="line"><span class="keyword">int</span> x2 = <span class="number">101</span>;</span><br><span class="line">Integer x3 = <span class="number">101</span>;</span><br><span class="line"><span class="comment">// 反编译结果：// Method java/lang/Integer.intValue:()I；包装类自动拆箱</span></span><br><span class="line">System.out.println(x1+x2);</span><br><span class="line"><span class="comment">// Method java/lang/Integer.intValue:()I</span></span><br><span class="line">System.out.println(x1==x2);</span><br><span class="line"><span class="comment">// Method java/lang/Integer.valueOf:(I)Ljava/lang/Integer;基本类型自动装箱</span></span><br><span class="line">System.out.println(x1.equals(x2));</span><br><span class="line">System.out.println(x1==x3);</span><br></pre></td></tr></table></figure>
+<p>jad反编译结果：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Integer x1 = <span class="keyword">new</span> Integer(<span class="number">101</span>);</span><br><span class="line"><span class="keyword">int</span> x2 = <span class="number">101</span>;</span><br><span class="line">Integer x3 = Integer.valueOf(<span class="number">101</span>);</span><br><span class="line">System.out.println(x1.intValue() + x2);</span><br><span class="line">System.out.println(x1.intValue() == x2);</span><br><span class="line">System.out.println(x1.equals(Integer.valueOf(x2)));</span><br><span class="line">System.out.println(x1 == x3);</span><br></pre></td></tr></table></figure>
+<p>观察发现java编译过程确实为我们的代码添加了不少的”额外信息”。这里其实就是所谓的自动拆装箱了。</p>
+<h2 id="字段分析"><a href="#字段分析" class="headerlink" title="字段分析"></a>字段分析</h2><p>在看源码中具体的方法实现之前，我们先看一下里面包含的一些重要字段，先从简单的Integer开始</p>
+<blockquote>
+<p>每个保证类中都存有一个基本数据类型值，它是实现拆箱操作的关键。</p>
+</blockquote>
+<p>在其他包装类中都能发现类似的字段：最大最小值，类对象，<strong>对应基本数据类型值</strong>，位大小等。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * A constant holding the minimum value an &#123;<span class="doctag">@code</span> int&#125; can</span></span><br><span class="line"><span class="comment"> * have, -2&lt;sup&gt;31&lt;/sup&gt;.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Native</span> <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span>   MIN_VALUE = <span class="number">0x80000000</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * A constant holding the maximum value an &#123;<span class="doctag">@code</span> int&#125; can</span></span><br><span class="line"><span class="comment"> * have, 2&lt;sup&gt;31&lt;/sup&gt;-1.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Native</span> <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span>   MAX_VALUE = <span class="number">0x7fffffff</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * The &#123;<span class="doctag">@code</span> Class&#125; instance representing the primitive type</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@code</span> int&#125;.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span>   JDK1.1</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Class&lt;Integer&gt;  TYPE = (Class&lt;Integer&gt;) Class.getPrimitiveClass(<span class="string">&quot;int&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * All possible chars for representing a number as a String</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">char</span>[] digits = &#123;</span><br><span class="line">    <span class="string">&#x27;0&#x27;</span> , <span class="string">&#x27;1&#x27;</span> , <span class="string">&#x27;2&#x27;</span> , <span class="string">&#x27;3&#x27;</span> , <span class="string">&#x27;4&#x27;</span> , <span class="string">&#x27;5&#x27;</span> ,</span><br><span class="line">    <span class="string">&#x27;6&#x27;</span> , <span class="string">&#x27;7&#x27;</span> , <span class="string">&#x27;8&#x27;</span> , <span class="string">&#x27;9&#x27;</span> , <span class="string">&#x27;a&#x27;</span> , <span class="string">&#x27;b&#x27;</span> ,</span><br><span class="line">    <span class="string">&#x27;c&#x27;</span> , <span class="string">&#x27;d&#x27;</span> , <span class="string">&#x27;e&#x27;</span> , <span class="string">&#x27;f&#x27;</span> , <span class="string">&#x27;g&#x27;</span> , <span class="string">&#x27;h&#x27;</span> ,</span><br><span class="line">    <span class="string">&#x27;i&#x27;</span> , <span class="string">&#x27;j&#x27;</span> , <span class="string">&#x27;k&#x27;</span> , <span class="string">&#x27;l&#x27;</span> , <span class="string">&#x27;m&#x27;</span> , <span class="string">&#x27;n&#x27;</span> ,</span><br><span class="line">    <span class="string">&#x27;o&#x27;</span> , <span class="string">&#x27;p&#x27;</span> , <span class="string">&#x27;q&#x27;</span> , <span class="string">&#x27;r&#x27;</span> , <span class="string">&#x27;s&#x27;</span> , <span class="string">&#x27;t&#x27;</span> ,</span><br><span class="line">    <span class="string">&#x27;u&#x27;</span> , <span class="string">&#x27;v&#x27;</span> , <span class="string">&#x27;w&#x27;</span> , <span class="string">&#x27;x&#x27;</span> , <span class="string">&#x27;y&#x27;</span> , <span class="string">&#x27;z&#x27;</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * The value of the &#123;<span class="doctag">@code</span> Integer&#125;.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@serial</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> value;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * The number of bits used to represent an &#123;<span class="doctag">@code</span> int&#125; value in two&#x27;s</span></span><br><span class="line"><span class="comment"> * complement binary form.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 1.5</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Native</span> <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SIZE = <span class="number">32</span>;</span><br></pre></td></tr></table></figure>
+<p>再比如Short类：</p>
+<p><img src="https://gitee.com/xinyang2233/blog-images/raw/master/image-20210307125534741.png" alt="image-20210307125534741"></p>
+<h2 id="包装类的缓存机制"><a href="#包装类的缓存机制" class="headerlink" title="包装类的缓存机制"></a>包装类的缓存机制</h2><p>我们先来看一下这个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Integer <span class="title">valueOf</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (i &gt;= IntegerCache.low &amp;&amp; i &lt;= IntegerCache.high)</span><br><span class="line">        <span class="keyword">return</span> IntegerCache.cache[i + (-IntegerCache.low)];</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Integer(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个方法相信我们大家都不陌生，在装箱过程中使用的就是该方法。但在实际装箱之前还做了一个判断，其中的关键类IntegerCache的命名其实就已经为我们解释了它的作用。这里我们先点进去看一下它内部的实现。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">IntegerCache</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> low = -<span class="number">128</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> high;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> Integer cache[];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="comment">// high value may be configured by property</span></span><br><span class="line">        <span class="keyword">int</span> h = <span class="number">127</span>;</span><br><span class="line">        String integerCacheHighPropValue =</span><br><span class="line">            sun.misc.VM.getSavedProperty(<span class="string">&quot;java.lang.Integer.IntegerCache.high&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (integerCacheHighPropValue != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">int</span> i = parseInt(integerCacheHighPropValue);</span><br><span class="line">                i = Math.max(i, <span class="number">127</span>);</span><br><span class="line">                <span class="comment">// Maximum array size is Integer.MAX_VALUE</span></span><br><span class="line">                h = Math.min(i, Integer.MAX_VALUE - (-low) -<span class="number">1</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span>( NumberFormatException nfe) &#123;</span><br><span class="line">                <span class="comment">// If the property cannot be parsed into an int, ignore it.</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        high = h;</span><br><span class="line"></span><br><span class="line">        cache = <span class="keyword">new</span> Integer[(high - low) + <span class="number">1</span>];</span><br><span class="line">        <span class="keyword">int</span> j = low;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; cache.length; k++)</span><br><span class="line">            cache[k] = <span class="keyword">new</span> Integer(j++);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// range [-128, 127] must be interned (JLS7 5.1.7)</span></span><br><span class="line">        <span class="keyword">assert</span> IntegerCache.high &gt;= <span class="number">127</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">IntegerCache</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码并不难懂，前面的静态代码块做了个范围的调节功能，重点观察一下代码段</p>
+<p><code>sun.misc.VM.getSavedProperty(&quot;java.lang.Integer.IntegerCache.high&quot;)</code></p>
+<p>它的意思我们仔细想想就能明白无非就是从<code>&quot;java.lang.Integer.IntegerCache.high&quot;</code>这个“地方”获取到要用的参数。它与我们熟悉的<code>System.getProperties()</code>方法类似，但要说出它们的具体区别还是得从源码角度深入分析。</p>
+<p>首先我们要知道JVM的执行逻辑，程序启动时JVM会自动调用<code>initializeSystemClass</code>方法来初始化System类</p>
+<p>在<code>java.lang.System</code>中我们可以看到它的执行逻辑：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Initialize the system class.  Called after thread initialization.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">initializeSystemClass</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// VM might invoke JNU_NewStringPlatform() to set those encoding</span></span><br><span class="line">        <span class="comment">// sensitive properties (user.home, user.name, boot.class.path, etc.)</span></span><br><span class="line">        <span class="comment">// during &quot;props&quot; initialization, in which it may need access, via</span></span><br><span class="line">        <span class="comment">// System.getProperty(), to the related system encoding property that</span></span><br><span class="line">        <span class="comment">// have been initialized (put into &quot;props&quot;) at early stage of the</span></span><br><span class="line">        <span class="comment">// initialization. So make sure the &quot;props&quot; is available at the</span></span><br><span class="line">        <span class="comment">// very beginning of the initialization and all system properties to</span></span><br><span class="line">        <span class="comment">// be put into it directly.</span></span><br><span class="line">        props = <span class="keyword">new</span> Properties();</span><br><span class="line">        initProperties(props);  <span class="comment">// initialized by the VM</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// There are certain system configurations that may be controlled by</span></span><br><span class="line">        <span class="comment">// VM options such as the maximum amount of direct memory and</span></span><br><span class="line">        <span class="comment">// Integer cache size used to support the object identity semantics</span></span><br><span class="line">        <span class="comment">// of autoboxing.  Typically, the library will obtain these values</span></span><br><span class="line">        <span class="comment">// from the properties set by the VM.  If the properties are for</span></span><br><span class="line">        <span class="comment">// internal implementation use only, these properties should be</span></span><br><span class="line">        <span class="comment">// removed from the system properties.</span></span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// See java.lang.Integer.IntegerCache and the</span></span><br><span class="line">        <span class="comment">// sun.misc.VM.saveAndRemoveProperties method for example.</span></span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// Save a private copy of the system properties object that</span></span><br><span class="line">        <span class="comment">// can only be accessed by the internal implementation.  Remove</span></span><br><span class="line">        <span class="comment">// certain system properties that are not intended for public access.</span></span><br><span class="line">        sun.misc.VM.saveAndRemoveProperties(props);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        lineSeparator = props.getProperty(<span class="string">&quot;line.separator&quot;</span>);</span><br><span class="line">        sun.misc.Version.init();</span><br><span class="line"></span><br><span class="line">        FileInputStream fdIn = <span class="keyword">new</span> FileInputStream(FileDescriptor.in);</span><br><span class="line">        FileOutputStream fdOut = <span class="keyword">new</span> FileOutputStream(FileDescriptor.out);</span><br><span class="line">        FileOutputStream fdErr = <span class="keyword">new</span> FileOutputStream(FileDescriptor.err);</span><br><span class="line">        setIn0(<span class="keyword">new</span> BufferedInputStream(fdIn));</span><br><span class="line">        setOut0(newPrintStream(fdOut, props.getProperty(<span class="string">&quot;sun.stdout.encoding&quot;</span>)));</span><br><span class="line">        setErr0(newPrintStream(fdErr, props.getProperty(<span class="string">&quot;sun.stderr.encoding&quot;</span>)));</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Load the zip library now in order to keep java.util.zip.ZipFile</span></span><br><span class="line">        <span class="comment">// from trying to use itself to load this library later.</span></span><br><span class="line">        loadLibrary(<span class="string">&quot;zip&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Setup Java signal handlers for HUP, TERM, and INT (where available).</span></span><br><span class="line">        Terminator.setup();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Initialize any miscellenous operating system settings that need to be</span></span><br><span class="line">        <span class="comment">// set for the class libraries. Currently this is no-op everywhere except</span></span><br><span class="line">        <span class="comment">// for Windows where the process-wide error mode is set before the java.io</span></span><br><span class="line">        <span class="comment">// classes are used.</span></span><br><span class="line">        sun.misc.VM.initializeOSEnvironment();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// The main thread is not added to its thread group in the same</span></span><br><span class="line">        <span class="comment">// way as other threads; we must do it ourselves here.</span></span><br><span class="line">        Thread current = Thread.currentThread();</span><br><span class="line">        current.getThreadGroup().add(current);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// register shared secrets</span></span><br><span class="line">        setJavaLangAccess();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Subsystems that are invoked during initialization can invoke</span></span><br><span class="line">        <span class="comment">// sun.misc.VM.isBooted() in order to avoid doing things that should</span></span><br><span class="line">        <span class="comment">// wait until the application class loader has been set up.</span></span><br><span class="line">        <span class="comment">// IMPORTANT: Ensure that this remains the last initialization action!</span></span><br><span class="line">        sun.misc.VM.booted();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>具体实现细节开发者已经在代码中给出了详细的解释，这里在对细节作简要说明：</p>
+<p><code>initProperties(props);</code>初始化参数，我们点进该方法可以看到它是个本地方法，本地方法实现从操作系统中获取全局属性</p>
+<blockquote>
+<p>native 关键字作用？</p>
+<p>首先我们知道java是跨平台的，作为跨平台的代价就是java对于底层操作系统的控制远不如c、c++这些。这个时候java必须开放一个“通道”实现java与操作系统之间的“沟通”，native便是该入口。当JVM要调用一个native方法时，JVM会从本地库中调用该方法，同时该方法通过c语言实现，c语言实现时调用JNI（java native interface）</p>
+</blockquote>
+<p><code>private static native Properties initProperties(Properties props);</code></p>
+<p>接下来是<code>sun.misc.VM.saveAndRemoveProperties(props);</code> 同样点进去看一下源码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">saveAndRemoveProperties</span><span class="params">(Properties var0)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (booted) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">&quot;System initialization has completed&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        savedProps.putAll(var0);</span><br><span class="line">        String var1 = (String)var0.remove(<span class="string">&quot;sun.nio.MaxDirectMemorySize&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (var1 != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (var1.equals(<span class="string">&quot;-1&quot;</span>)) &#123;</span><br><span class="line">                directMemory = Runtime.getRuntime().maxMemory();</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">long</span> var2 = Long.parseLong(var1);</span><br><span class="line">                <span class="keyword">if</span> (var2 &gt; -<span class="number">1L</span>) &#123;</span><br><span class="line">                    directMemory = var2;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        var1 = (String)var0.remove(<span class="string">&quot;sun.nio.PageAlignDirectMemory&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">&quot;true&quot;</span>.equals(var1)) &#123;</span><br><span class="line">            pageAlignDirectMemory = <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        var1 = var0.getProperty(<span class="string">&quot;sun.lang.ClassLoader.allowArraySyntax&quot;</span>);</span><br><span class="line">        allowArraySyntax = var1 == <span class="keyword">null</span> ? defaultAllowArraySyntax : Boolean.parseBoolean(var1);</span><br><span class="line">        var0.remove(<span class="string">&quot;java.lang.Integer.IntegerCache.high&quot;</span>);</span><br><span class="line">        var0.remove(<span class="string">&quot;sun.zip.disableMemoryMapping&quot;</span>);</span><br><span class="line">        var0.remove(<span class="string">&quot;sun.java.launcher.diag&quot;</span>);</span><br><span class="line">        var0.remove(<span class="string">&quot;sun.cds.enableSharedLookupCache&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>认真看一下这串代码，它的实际实现的是不是这样一个过程：</p>
+<ol>
+<li><code>savedProps.putAll(var0);</code>：系统参数备份到VM类中</li>
+<li><code>var0.remove()</code> :  将系统类中某些指定参数移除</li>
+<li><code>directMemory|pageAlignDirectMemory|allowArraySyntax</code>：对VM类中的特定属性赋值</li>
+</ol>
+<p>我们想一想这样做的目的是什么？</p>
+<p>开发者告诉我们的是：保存只能由内部实现访问的系统属性对象的私有副本，删除某些不用于公共访问的系统属性</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Save a private copy of the system properties object that</span></span><br><span class="line"><span class="comment">// can only be accessed by the internal implementation.  Remove</span></span><br><span class="line"><span class="comment">// certain system properties that are not intended for public access.</span></span><br><span class="line">sun.misc.VM.saveAndRemoveProperties(props);</span><br></pre></td></tr></table></figure>
+<p>它这样设计主要还是为了安全考虑和隔离角度考虑，避免JVM的内部行为受到运行时用户代码对<code>System.properties</code>的修改所干扰。</p>
+<p>所以我们在给JVM设置参数的时候往往写在运行时的 VM options 上。例如这里的<code>java.lang.Integer.IntegerCache.high</code></p>
+<p>我们可以在VM options 上写<code>-Djava.lang.Integer.IntegerCache.high=xxx</code></p>
+<p>这里可以自己试一试，看一下有没有效果：</p>
+<p><img src="https://gitee.com/xinyang2233/blog-images/raw/master/image-20210307141759023.png" alt="image-20210307141759023"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Integer x1 = <span class="number">222</span>;</span><br><span class="line">Integer x2 = <span class="number">222</span>;</span><br><span class="line">System.out.println(VM.getSavedProperty(<span class="string">&quot;java.lang.Integer.IntegerCache.high&quot;</span>));</span><br><span class="line">System.out.println(System.getProperty(<span class="string">&quot;java.lang.Integer.IntegerCache.high&quot;</span>));</span><br><span class="line">System.out.println(x1 == x2);</span><br><span class="line"><span class="comment">//返回结果：</span></span><br><span class="line"><span class="comment">//	300</span></span><br><span class="line"><span class="comment">//	null</span></span><br><span class="line"><span class="comment">//	true</span></span><br></pre></td></tr></table></figure>
+<p><code>initializeSystemClass</code> 方法看到这里其实已经可以解释我们一开始的遇到的问题了，即<code>sun.misc.VM.getSavedProperty()</code> 方法与 <code>System.getProperties()</code>方法的区别。</p>
+<p>至于后面代码块的内容与本篇内容无关，在这里不做过多解释。</p>
+<p>我们继续回到<code>IntegerCache</code>类，后面的内容果然和我们一开始想的一致，它的实现就是类似于“缓存”的机制。该类在加载之初就已经自动实例化了默认范围[-128,127]的Integer对象。分别存储在cache[]数组中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; cache.length; k++)</span><br><span class="line">	cache[k] = <span class="keyword">new</span> Integer(j++);</span><br></pre></td></tr></table></figure>
+<p>这样一来我们在该范围内所获取的同一个指定值，是不是都是同一个对象了。</p>
+<p>可是这么做又有什么好处呢？</p>
+<p>它的作用其实就是类似于缓存的作用。我们在创建大量Integer对象时可以减少内存的分配（大量Integer对象就在指定范围内创建）。而内存分配少了，JVM gc 次数是不是就少了，gc 次数少了，程序执行效率自然也就提高了。</p>
+<p>回过头来我们再看一下Short、Long、Byte、Character类，他们同样都有缓存机制，然而并不能手动调节缓存的范围</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Short <span class="title">valueOf</span><span class="params">(<span class="keyword">short</span> s)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> offset = <span class="number">128</span>;</span><br><span class="line">    <span class="keyword">int</span> sAsInt = s;</span><br><span class="line">    <span class="keyword">if</span> (sAsInt &gt;= -<span class="number">128</span> &amp;&amp; sAsInt &lt;= <span class="number">127</span>) &#123; <span class="comment">// must cache</span></span><br><span class="line">        <span class="keyword">return</span> ShortCache.cache[sAsInt + offset];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Short(s);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Long <span class="title">valueOf</span><span class="params">(<span class="keyword">long</span> l)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> offset = <span class="number">128</span>;</span><br><span class="line">    <span class="keyword">if</span> (l &gt;= -<span class="number">128</span> &amp;&amp; l &lt;= <span class="number">127</span>) &#123; <span class="comment">// will cache</span></span><br><span class="line">        <span class="keyword">return</span> LongCache.cache[(<span class="keyword">int</span>)l + offset];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Long(l);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Byte <span class="title">valueOf</span><span class="params">(<span class="keyword">byte</span> b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> offset = <span class="number">128</span>;</span><br><span class="line">    <span class="keyword">return</span> ByteCache.cache[(<span class="keyword">int</span>)b + offset];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Character <span class="title">valueOf</span><span class="params">(<span class="keyword">char</span> c)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (c &lt;= <span class="number">127</span>) &#123; <span class="comment">// must cache</span></span><br><span class="line">        <span class="keyword">return</span> CharacterCache.cache[(<span class="keyword">int</span>)c];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Character(c);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">xinyang</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://xinyang11.github.io/2021/03/07/Java/%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB%EF%BC%9A%E5%8C%85%E8%A3%85%E7%B1%BB%E5%9E%8B/">http://xinyang11.github.io/2021/03/07/Java/%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB%EF%BC%9A%E5%8C%85%E8%A3%85%E7%B1%BB%E5%9E%8B/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%BA%90%E7%A0%81/">源码</a><a class="post-meta__tags" href="/tags/%E5%8C%85%E8%A3%85%E7%B1%BB/">包装类</a></div><div class="post_share"><div class="social-share" data-image="/img/cover/028.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> Donate<div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechat.jpg" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src="/img/alipay.jpg" alt="alipay"/></a><div class="post-qr-code-desc">alipay</div></li></ul></div></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/03/07/Java/%E9%9B%86%E5%90%88%E7%B1%BB%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/"><img class="prev-cover" src="/img/cover/028.jpg" onerror="onerror=null;src='/img/friend_404.gif'"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">源码解读：集合类型</div></div></a></div><div class="next-post pull-right"><a href="/2021/03/03/%E4%B8%AD%E9%97%B4%E4%BB%B6/zookeeper/"><img class="next-cover" src="/img/cover/028.jpg" onerror="onerror=null;src='/img/friend_404.gif'"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">zookeeper深入理解</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2021/03/07/Java/集合类源码解读/" title="源码解读：集合类型"><img class="cover" src="/img/cover/028.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-07</div><div class="title">源码解读：集合类型</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> Comment</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></article></main><footer id="footer" style="background-image: url(/img/cover/028.jpg)"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By xinyang</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcome to my <a href="https://xinyang11.github.io">blog</a>!</div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="Switch Between Traditional Chinese And Simplified Chinese">簡</button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog"></i></button><a id="to_comment" href="#post-comment" title="Scroll To Comments"><i class="fas fa-comments"></i></a><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">Local search</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>Powered by</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  var script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script>function loadValine () {
+  function initValine () {
+    const initData = {
+      el: '#vcomment',
+      appId: 'KTrewC7y7MIozEdjGmAQymc6-gzGzoHsz',
+      appKey: 'XnEOjMyLcqe2GV3jJW2RoUir',
+      placeholder: 'Please leave your footprints',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'en',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '//i0.hdslb.com/bfs/emote/',
+      emojiMaps: {"tv_doge":"6ea59c827c414b4a2955fe79e0f6fd3dcd515e24.png","tv_亲亲":"a8111ad55953ef5e3be3327ef94eb4a39d535d06.png","tv_偷笑":"bb690d4107620f1c15cff29509db529a73aee261.png","tv_再见":"180129b8ea851044ce71caf55cc8ce44bd4a4fc8.png","tv_冷漠":"b9cbc755c2b3ee43be07ca13de84e5b699a3f101.png","tv_发怒":"34ba3cd204d5b05fec70ce08fa9fa0dd612409ff.png","tv_发财":"34db290afd2963723c6eb3c4560667db7253a21a.png","tv_可爱":"9e55fd9b500ac4b96613539f1ce2f9499e314ed9.png","tv_吐血":"09dd16a7aa59b77baa1155d47484409624470c77.png","tv_呆":"fe1179ebaa191569b0d31cecafe7a2cd1c951c9d.png","tv_呕吐":"9f996894a39e282ccf5e66856af49483f81870f3.png","tv_困":"241ee304e44c0af029adceb294399391e4737ef2.png","tv_坏笑":"1f0b87f731a671079842116e0991c91c2c88645a.png","tv_大佬":"093c1e2c490161aca397afc45573c877cdead616.png","tv_大哭":"23269aeb35f99daee28dda129676f6e9ea87934f.png","tv_委屈":"d04dba7b5465779e9755d2ab6f0a897b9b33bb77.png","tv_害羞":"a37683fb5642fa3ddfc7f4e5525fd13e42a2bdb1.png","tv_尴尬":"7cfa62dafc59798a3d3fb262d421eeeff166cfa4.png","tv_微笑":"70dc5c7b56f93eb61bddba11e28fb1d18fddcd4c.png","tv_思考":"90cf159733e558137ed20aa04d09964436f618a1.png","tv_惊吓":"0d15c7e2ee58e935adc6a7193ee042388adc22af.png"},
+      enableQQ: false,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else $.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js', initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.querySelector('#vcomment'),loadValine)
+  else setTimeout(() => loadValine(), 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><div class="aplayer no-destroy" data-id="000PeZCQ1i4XVs" data-server="tencent" data-type="artist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="true" muted></div><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = true;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-show-text.min.js" async="async" mobile="true"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  '#config_change',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"]):not([href="/music/"]):not([href="/no-pjax/"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  $('script[data-pjax]').each(function () {
+    $(this).parent().append($(this).remove())
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', '', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  $(window).off('scroll')
+
+  //reset readmode
+  $('body').hasClass('read-mode') && $('body').removeClass('read-mode')
+
+})</script></div></body></html>
