@@ -1,13 +1,13 @@
-<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>xinyang11 | xinyang11</title><meta name="author" content="xinyang"><meta name="copyright" content="xinyang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="拾贝商城系统 calypso&#x2F;inn   reborn  主业务 一、批次创建流程   创建营销方案，cardplan 新增一条记录   新建发放批次，参数校验。验证通过新增一条批次记录。   针对方案验证类型将批次号、批次id、文件发送给异步任务处理。目前支持手机验证等。   异步任务进行文件合法校验。   校验通过：   若为手机验证方式 校验该用户是否已注册，若还没注册则注册该用户。（查u">
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>拾贝商城系统 | xinyang11</title><meta name="author" content="xinyang"><meta name="copyright" content="xinyang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="拾贝商城系统calypso&#x2F;inn   reborn 主业务一、批次创建流程  创建营销方案，cardplan 新增一条记录  新建发放批次，参数校验。验证通过新增一条批次记录。  针对方案验证类型将批次号、批次id、文件发送给异步任务处理。目前支持手机验证等。  异步任务进行文件合法校验。  校验通过：  若为手机验证方式 校验该用户是否已注册，若还没注册则注册该用户。（查user表）  若非手">
 <meta property="og:type" content="article">
-<meta property="og:title" content="xinyang11">
+<meta property="og:title" content="拾贝商城系统">
 <meta property="og:url" content="http://xinyang11.github.io/2021/08/29/%E9%A1%B9%E7%9B%AE/calypso/index.html">
 <meta property="og:site_name" content="xinyang11">
-<meta property="og:description" content="拾贝商城系统 calypso&#x2F;inn   reborn  主业务 一、批次创建流程   创建营销方案，cardplan 新增一条记录   新建发放批次，参数校验。验证通过新增一条批次记录。   针对方案验证类型将批次号、批次id、文件发送给异步任务处理。目前支持手机验证等。   异步任务进行文件合法校验。   校验通过：   若为手机验证方式 校验该用户是否已注册，若还没注册则注册该用户。（查u">
+<meta property="og:description" content="拾贝商城系统calypso&#x2F;inn   reborn 主业务一、批次创建流程  创建营销方案，cardplan 新增一条记录  新建发放批次，参数校验。验证通过新增一条批次记录。  针对方案验证类型将批次号、批次id、文件发送给异步任务处理。目前支持手机验证等。  异步任务进行文件合法校验。  校验通过：  若为手机验证方式 校验该用户是否已注册，若还没注册则注册该用户。（查user表）  若非手">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://xinyang11.github.io/img/cover/028.jpg">
 <meta property="article:published_time" content="2021-08-29T05:13:02.115Z">
-<meta property="article:modified_time" content="2021-08-29T05:43:15.729Z">
+<meta property="article:modified_time" content="2021-10-16T06:13:14.667Z">
 <meta property="article:author" content="xinyang">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://xinyang11.github.io/img/cover/028.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://xinyang11.github.io/2021/08/29/%E9%A1%B9%E7%9B%AE/calypso/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
@@ -79,7 +79,7 @@ var saveToLocal = {
   isHome: false,
   isHighlightShrink: false,
   isSidebar: true,
-  postUpdate: '2021-08-29 13:43:15'
+  postUpdate: '2021-10-16 14:13:14'
 }</script><noscript><style type="text/css">
   #nav {
     opacity: 1
@@ -141,59 +141,45 @@ var saveToLocal = {
     if (t === 'dark') activateDarkMode()
     else if (t === 'light') activateLightMode()
   }
-})()</script><style type="text/css">#toggle-sidebar {bottom: 80px}</style><meta name="generator" content="Hexo 5.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">Articles</div><div class="length_num">63</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">Tags</div><div class="length_num">67</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">Categories</div><div class="length_num">18</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand hide"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><div id="web_bg"></div><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%BE%E8%B4%9D%E5%95%86%E5%9F%8E%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text"> 拾贝商城系统</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%BB%E4%B8%9A%E5%8A%A1"><span class="toc-number">1.0.1.</span> <span class="toc-text"> 主业务</span></a></li></ol></li></ol></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(/img/cover/028.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">xinyang11</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand hide"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">No title</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-08-29T05:13:02.115Z" title="Created 2021-08-29 13:13:02">2021-08-29</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-08-29T05:43:15.729Z" title="Updated 2021-08-29 13:43:15">2021-08-29</time></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h3 id="拾贝商城系统"><a class="markdownIt-Anchor" href="#拾贝商城系统"></a> 拾贝商城系统</h3>
-<p>calypso/inn   reborn</p>
-<h5 id="主业务"><a class="markdownIt-Anchor" href="#主业务"></a> 主业务</h5>
-<p>一、批次创建流程</p>
+})()</script><style type="text/css">#toggle-sidebar {bottom: 80px}</style><meta name="generator" content="Hexo 5.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">Articles</div><div class="length_num">62</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">Tags</div><div class="length_num">67</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">Categories</div><div class="length_num">20</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand hide"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><div id="web_bg"></div><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%BE%E8%B4%9D%E5%95%86%E5%9F%8E%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.</span> <span class="toc-text">拾贝商城系统</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%BB%E4%B8%9A%E5%8A%A1"><span class="toc-number">1.0.1.</span> <span class="toc-text">主业务</span></a></li></ol></li></ol></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(/img/cover/028.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">xinyang11</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down expand hide"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">拾贝商城系统</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-08-29T05:13:02.115Z" title="Created 2021-08-29 13:13:02">2021-08-29</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-10-16T06:13:14.667Z" title="Updated 2021-10-16 14:13:14">2021-10-16</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%A1%B9%E7%9B%AE/">项目</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h3 id="拾贝商城系统"><a href="#拾贝商城系统" class="headerlink" title="拾贝商城系统"></a>拾贝商城系统</h3><p>calypso/inn   reborn</p>
+<h5 id="主业务"><a href="#主业务" class="headerlink" title="主业务"></a>主业务</h5><p>一、批次创建流程</p>
 <ol>
-<li>
-<p>创建营销方案，cardplan 新增一条记录</p>
+<li><p>创建营销方案，cardplan 新增一条记录</p>
 </li>
-<li>
-<p>新建发放批次，参数校验。验证通过新增一条批次记录。</p>
+<li><p>新建发放批次，参数校验。验证通过新增一条批次记录。</p>
 </li>
-<li>
-<p>针对方案验证类型将批次号、批次id、文件发送给异步任务处理。目前支持手机验证等。</p>
+<li><p>针对方案验证类型将批次号、批次id、文件发送给异步任务处理。目前支持手机验证等。</p>
 </li>
-<li>
-<p>异步任务进行文件合法校验。</p>
+<li><p>异步任务进行文件合法校验。</p>
 </li>
-<li>
-<p>校验通过：</p>
+<li><p>校验通过：</p>
 <ul>
-<li>
-<p>若为手机验证方式</p>
+<li><p>若为手机验证方式</p>
 <p>校验该用户是否已注册，若还没注册则注册该用户。（查user表）</p>
 </li>
-<li>
-<p>若非手机验证方式</p>
+<li><p>若非手机验证方式</p>
 <p>针对不同验证模式进行判断校验</p>
 </li>
 </ul>
 </li>
-<li>
-<p>导入金额计算</p>
+<li><p>导入金额计算</p>
 </li>
-<li>
-<p>批次更新，方案更新。对于手机号验证的直接发放卡券到用户卡券usercard表。若非手机号验证类型卡券存到待发放卡券中，记录表为card_tmp</p>
+<li><p>批次更新，方案更新。对于手机号验证的直接发放卡券到用户卡券usercard表。若非手机号验证类型卡券存到待发放卡券中，记录表为card_tmp</p>
 </li>
-<li>
-<p>此时卡券批次成功创建并且状态为待发送。走卡券批次发送流程，卡券实际发送到用户卡券user_card中。（此时仅库中留存数据，由于状态为待发送，用户界面无法看到对应的卡券）</p>
+<li><p>此时卡券批次成功创建并且状态为待发送。走卡券批次发送流程，卡券实际发送到用户卡券user_card中。（此时仅库中留存数据，由于状态为待发送，用户界面无法看到对应的卡券）</p>
 </li>
 </ol>
 <p>二、卡券实际发送流程</p>
 <ol>
-<li>
-<p>后台批次创建成功后点击发送，走send流程</p>
+<li><p>后台批次创建成功后点击发送，走send流程</p>
 </li>
-<li>
-<p>根据不同卡券方案验证方式走不同卡券发送流程。目前仅三种方向：</p>
+<li><p>根据不同卡券方案验证方式走不同卡券发送流程。目前仅三种方向：</p>
 <p><strong>手机验证方式</strong></p>
 <ul>
 <li>卡券批次状态变更发送中</li>
 <li>开启异步线程处理卡券发送任务</li>
 </ul>
-<p><img src="C:%5CUsers%5CAdministrator%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210630104157077.png" alt="image-20210630104157077" /></p>
+<p><img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20210630104157077.png" alt="image-20210630104157077"></p>
 <ul>
 <li>实际卡券发送事务处理。包括卡券批次、用户卡券状态变更为已发送以及账户信息变更（公司转账至机构）</li>
 <li>卡券发送消息：针对类型为门店核销的卡券进行消息异步发送。交由mq将门店核销类型的用户卡券发送至门店系统中（inn）。此时在门店系统中保存为表puchase（采购单）数据。作为门店内部使用的采购单code，同时发送消息至商城系统留存对应code记录到litemall_scp_byinn_exchange表中。</li>
@@ -216,13 +202,10 @@ var saveToLocal = {
 <p>三、用户登录流程</p>
 <p>当前用户登录分两种方式</p>
 <ol>
-<li>
-<p>手机号登录<br />
-手机号登录方式通过输入手机号及对于验证码完成。</p>
+<li><p>手机号登录<br>手机号登录方式通过输入手机号及对于验证码完成。</p>
 <p>实现细节：本地生成随机码，通过sms服务将该随机码发送给用户。同时将手机号和验证码作为key-value键值对存储到分布式缓存中。输入验证码后的调用通过缓存获取与用户输入校验即可。（额外流程包括token生成、用户名查询等）</p>
 </li>
-<li>
-<p>车牌号+xxxx验证登录（包括vin码，身份证，保单号）</p>
+<li><p>车牌号+xxxx验证登录（包括vin码，身份证，保单号）</p>
 <p>车牌号登录基于待发放卡券的发送过程。由于保险公司（客户方customer）有时并不希望我们获得到他们的用户手机号信息，因此我们需要提供车牌号的登录模式。</p>
 <ul>
 <li>输入车牌号后，通过车牌号查询待发放卡券表。获取到对应卡券校验类型。若没有查找到有对应的卡券则返回0.</li>
@@ -231,8 +214,7 @@ var saveToLocal = {
 <li>同时再走一遍<code>卡券发送消息：针对类型为门店核销的卡券进行消息异步发送。交由mq将门店核销类型的用户卡券发送至门店系统中（inn）。此时在门店系统中保存为表puchase（采购单）数据。作为门店内部使用的采购单code，同时发送消息至商城系统留存对应code记录到litemall_scp_byinn_exchange表中。</code></li>
 </ul>
 </li>
-<li>
-<p>手机号+直接领取类型</p>
+<li><p>手机号+直接领取类型</p>
 <p>此时不走上面的请求因此用户登录后并没有直接获取到卡券。需要在服务领取页面获取手动进行领取（权益领取）。</p>
 </li>
 </ol>
@@ -245,8 +227,7 @@ var saveToLocal = {
 <li>/orderInfoConfirm 订单信息确认业。显示前面所选的各服务详情，以及数量总价信息。</li>
 <li>/makeUp 提交补充信息。提交同时更新核销单兑换券状态为已使用；订单状态为已完成；同时关闭该用户在当前门店下的所有其他预约单。发起mq交由calypso对用户卡券进行状态变更。发送短信给客户。</li>
 <li>当上传订单图片后订单状态变更为待审核</li>
-<li>此时可以回到后台管理calypso项目，进行三类操作
-<ul>
+<li>此时可以回到后台管理calypso项目，进行三类操作<ul>
 <li>订单审核。走/inn/order/audit。</li>
 <li>订单取消 /closeOrder，用户卡券状态变更为取消</li>
 <li>订单结算 /settle ，用户卡券状态变更为已使用</li>
@@ -290,7 +271,7 @@ var saveToLocal = {
 <p>无论是方案还是批次的建立都作为一种条件</p>
 <p>活动类型 &lt;==&gt; 规则</p>
 <p>规则</p>
-<p><img src="C:%5CUsers%5CAdministrator%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210803180244780.png" alt="image-20210803180244780" /></p>
+<p><img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20210803180244780.png" alt="image-20210803180244780"></p>
 <p>钉钉机器人：命令模式</p>
 <p>sql优化</p>
 <p>活动发放</p>
